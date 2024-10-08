@@ -2,12 +2,18 @@
   "extends": [
     "next/core-web-vitals",
     "next/typescript",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "next"
   ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js"],
-      "parser": "@typescript-eslint/parser"
+      "parser": "@typescript-eslint/parser",
+      "rules": {
+        "no-console": ["error", { "allow": ["warn", "error"] }],
+        "no-debugger": "error",
+        "no-unused-vars": "error"
+      }
     }
   ]
 }
