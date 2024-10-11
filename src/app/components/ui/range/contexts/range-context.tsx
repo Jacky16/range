@@ -20,6 +20,7 @@ export const RangeProvider = ({
   onChange,
   thumbSize = 16,
   children,
+  onValueCommit,
 }: PropsWithChildren<RangeProviderProps>) => {
   const [rangeValue, setRangeValue] = useState(initialValue);
   const [isDragging, setIsDragging] = useState(false);
@@ -41,6 +42,7 @@ export const RangeProvider = ({
         updateIsDragging: setIsDragging,
         initialValue,
         thumbSize,
+        onValueCommit,
       }}
     >
       {children}

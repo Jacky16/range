@@ -12,6 +12,7 @@ const RangeContainer = () => {
     updateIsDragging,
     initialValue,
     thumbSize,
+    onValueCommit,
   } = useRange();
 
   const trackRef = useRef<HTMLDivElement>(null);
@@ -21,6 +22,8 @@ const RangeContainer = () => {
 
   const isDraggingLeft = useRef(false);
   const isDraggingRight = useRef(false);
+
+  const rangeValueRef = useRef(rangeValue);
 
   const handleMouseMove = (event: MouseEvent) => {
     if (!trackRef.current) return;
@@ -46,6 +49,11 @@ const RangeContainer = () => {
         ...rangeValue,
         min: thumbPosition,
       });
+
+      rangeValueRef.current = {
+        ...rangeValue,
+        min: thumbPosition,
+      };
     }
 
     if (isDraggingRight.current) {
@@ -57,6 +65,11 @@ const RangeContainer = () => {
         ...rangeValue,
         max: thumbPosition,
       });
+
+      rangeValueRef.current = {
+        ...rangeValue,
+        max: thumbPosition,
+      };
     }
   };
 
@@ -74,6 +87,8 @@ const RangeContainer = () => {
     isDraggingRight.current = false;
 
     updateIsDragging(false);
+
+    onValueCommit?.(rangeValueRef.current);
 
     window.removeEventListener("mousemove", handleMouseMove);
     window.removeEventListener("mouseup", handleMouseUp);
