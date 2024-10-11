@@ -57,7 +57,8 @@ const Range: React.FC<Props> = ({ min = 0, max = 100 }) => {
 
     if (isDraggingRight.current) {
       if (thumbPosition >= max) thumbPosition = max;
-      else if (thumbPosition <= rangeValue.min) thumbPosition = rangeValue.min;
+      else if (thumbPosition <= rangeValue.min)
+        thumbPosition = rangeValue.min - 0.01;
 
       setRangeValue((prev) => ({ ...prev, max: thumbPosition }));
     }
@@ -93,25 +94,43 @@ const Range: React.FC<Props> = ({ min = 0, max = 100 }) => {
 
   return (
     <RangeProvider min={min} max={max}>
-      <Track ref={trackRef}>
-        <TrackRange thumbSize={sizeThumb} />
-
-        <Thumb
-          ref={leftThumbRef}
-          onMouseDown={handleMouseDownLeft}
-          style={{ left: `${rangeValue.min}%` }}
-          value={rangeValue.min}
-          dragging={dragging}
+      <div className="flex items-center justify-center gap-2.5">
+        <input
+          type="text"
+          className="w-16 text-sm border-b-2 border-transparent text-right focus:border-b-2 focus:border-gray-500 focus:outline-none"
+          value={rangeValue.min.toLocaleString("es", {
+            style: "currency",
+            currency: "EUR",
+          })}
         />
+        <Track ref={trackRef} style={{ marginRight: `${sizeThumb}px` }}>
+          <TrackRange thumbSize={sizeThumb} />
 
-        <Thumb
-          ref={rightThumbRef}
-          onMouseDown={handleMouseDownRight}
-          style={{ left: `${rangeValue.max}%` }}
-          value={rangeValue.max}
-          dragging={dragging}
+          <Thumb
+            ref={leftThumbRef}
+            onMouseDown={handleMouseDownLeft}
+            style={{ left: `${rangeValue.min}%` }}
+            value={rangeValue.min}
+            dragging={dragging}
+          />
+
+          <Thumb
+            ref={rightThumbRef}
+            onMouseDown={handleMouseDownRight}
+            style={{ left: `${rangeValue.max}%` }}
+            value={rangeValue.max}
+            dragging={dragging}
+          />
+        </Track>
+        <input
+          type="text"
+          className="w-16 text-sm border-b-2 border-transparent text-left focus:border-b-2 focus:border-gray-500 focus:outline-none"
+          value={rangeValue.max.toLocaleString("es", {
+            style: "currency",
+            currency: "EUR",
+          })}
         />
-      </Track>
+      </div>
     </RangeProvider>
   );
 };

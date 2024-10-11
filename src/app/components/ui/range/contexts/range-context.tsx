@@ -1,40 +1,48 @@
-import { createContext, PropsWithChildren, useReducer } from "react";
-import rangeReducer from "../reducers/range-reducer";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 import {
-  RangeContextValue,
+  RangeContextProps,
   RangeProviderProps,
-  RangeState,
+  RangeValue,
 } from "../types/range-context.types";
 
-const initialState: RangeState = {
-  min: 0,
-  max: 100,
-  valueMin: 0,
-  valueMax: 100,
+const RangeContext = createContext<RangeContextProps | null>(null);
+
+export const useRange = () => {
+  const context = useContext(RangeContext);
+  if (!context) {
+    throw new Error("useRange debe ser usado dentro de un RangeProvider");
+  }
+  return context;
 };
 
-const RangeContext = createContext<RangeContextValue>({
-  dispatch: () => {},
-  state: { ...initialState },
-});
-
-export default RangeContext;
-
 export const RangeProvider = ({
-  max,
-  min,
+  initialValue,
+  onChange,
+  thumbSize = 16,
   children,
 }: PropsWithChildren<RangeProviderProps>) => {
-  const [state, dispatch] = useReducer(rangeReducer, {
-    ...initialState,
-    min,
-    max,
-    valueMin: min,
-    valueMax: max,
-  });
+  const [rangeValue, setRangeValue] = useState(initialValue);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const updateRangeValue = (newRangeValue: RangeValue) => {
+    setRangeValue({ ...newRangeValue });
+
+    if (onChange) {
+      onChange({ ...newRangeValue });
+    }
+  };
 
   return (
-    <RangeContext.Provider value={{ state, dispatch }}>
+    <RangeContext.Provider
+      value={{
+        rangeValue,
+        updateRangeValue,
+        isDragging,
+        updateIsDragging: setIsDragging,
+        initialValue,
+        thumbSize,
+      }}
+    >
       {children}
     </RangeContext.Provider>
   );

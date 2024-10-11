@@ -1,28 +1,20 @@
-import { Dispatch } from "react";
-
-export interface RangeState {
-  valueMin: number;
-  valueMax: number;
+export interface RangeValue {
   min: number;
   max: number;
 }
+export interface RangeContextProps {
+  rangeValue: RangeValue;
+  updateRangeValue: (newRangeValue: RangeValue) => void;
 
-export interface RangeContextValue {
-  state: RangeState;
-  dispatch: Dispatch<RangeContextActions>;
+  isDragging: boolean;
+  updateIsDragging: (isDragging: boolean) => void;
+
+  initialValue: RangeValue;
+  thumbSize: number;
 }
 
 export interface RangeProviderProps {
-  min: number;
-  max: number;
+  initialValue: RangeValue;
+  onChange?: (rangeValue: RangeValue) => void;
+  thumbSize?: number;
 }
-
-export type RangeContextActions =
-  | {
-      type: "SET_VALUE_MIN";
-      payload: number;
-    }
-  | {
-      type: "SET_VALUE_MAX";
-      payload: number;
-    };
