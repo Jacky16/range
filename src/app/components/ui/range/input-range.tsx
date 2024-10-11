@@ -1,7 +1,7 @@
 import { forwardRef, useState } from "react";
 import { tv, VariantProps } from "tailwind-variants";
 import { useRange } from "./contexts/range-context";
-import { RangeValue } from "./types/range-context.types";
+import { checkThumbPosition } from "./utils/utils";
 
 const inputRange = tv({
   base: "w-16 text-sm border-b-2 border-transparent text-left focus:border-b-2 focus:border-gray-500 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
@@ -32,25 +32,6 @@ const formatCurrency = (value: number) => {
     style: "currency",
     currency: "EUR",
   });
-};
-
-const checkInputValue = (
-  currentValue: number,
-  previousValue: RangeValue,
-  initialValue: RangeValue,
-  position: "left" | "right",
-  offsetBetweenThumbs = 0.01
-) => {
-  if (position === "left") {
-    if (currentValue >= initialValue.max || currentValue >= previousValue.max)
-      return previousValue.max - offsetBetweenThumbs;
-  }
-
-  if (position === "right") {
-    if (currentValue <= initialValue.min || currentValue <= previousValue.min)
-      return previousValue.min + offsetBetweenThumbs;
-  }
-  return currentValue;
 };
 
 const InputRange = forwardRef<HTMLInputElement, Props>(
@@ -92,7 +73,7 @@ const InputRange = forwardRef<HTMLInputElement, Props>(
             event.target.value.replace(expressionRegularToGetOnlyNumbers, "")
           );
 
-          const checkedValue = checkInputValue(
+          const checkedValue = checkThumbPosition(
             newValue,
             rangeValue,
             initialValue,

@@ -3,10 +3,16 @@ import { useRange } from "./contexts/range-context";
 import InputRange from "./input-range";
 import Thumb from "./thumb";
 import { Track, TrackRange } from "./track";
+import { calculateThumbPosition } from "./utils/utils";
 
 const RangeContainer = () => {
-  const { rangeValue, updateRangeValue, updateIsDragging, initialValue } =
-    useRange();
+  const {
+    rangeValue,
+    updateRangeValue,
+    updateIsDragging,
+    initialValue,
+    thumbSize,
+  } = useRange();
 
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -22,14 +28,12 @@ const RangeContainer = () => {
     const mouseXPosition = event.clientX;
     const rangeWidth = trackRef.current.getBoundingClientRect();
 
-    const offsetThumbPosition = isDraggingLeft.current
-      ? (leftThumbRef.current?.clientWidth ?? 0) / 2
-      : (rightThumbRef.current?.clientWidth ?? 0) / 2;
-
-    let thumbPosition =
-      ((mouseXPosition - rangeWidth.left - offsetThumbPosition) /
-        rangeWidth.width) *
-      100;
+    let thumbPosition = calculateThumbPosition(
+      mouseXPosition,
+      rangeWidth.left,
+      rangeWidth.width,
+      thumbSize
+    );
 
     if (isDraggingLeft.current) {
       if (thumbPosition <= initialValue.min) {
