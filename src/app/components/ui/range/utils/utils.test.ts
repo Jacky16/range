@@ -1,5 +1,9 @@
 import { RangeValue } from "../types/range-context.types";
-import { calculateThumbPosition, checkThumbPosition } from "./utils";
+import {
+  calculateRelativePercentage,
+  calculateThumbPosition,
+  checkThumbPosition,
+} from "./utils";
 
 describe("Given the calculateThumbPosition function", () => {
   describe("When the mouse is positioned at the middle of the range with an min value of 0 and a max value of 100 ", () => {
@@ -227,6 +231,78 @@ describe("Given the checkThumbPosition function with an offset of 0.01 between t
 
         expect(result).toBe(expectedResult);
       });
+    });
+  });
+});
+
+describe("Given the calculateRelativePercentage function", () => {
+  describe("When the value is less than the minValue", () => {
+    test("Then it should return 0", () => {
+      const expectedResult = 0;
+
+      const result = calculateRelativePercentage(5, 10, 60);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe("When the value is greater than the maxValue", () => {
+    test("Then it should return 100", () => {
+      const expectedResult = 100;
+
+      const result = calculateRelativePercentage(70, 10, 60);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe("When the value is equal to the minValue", () => {
+    test("Then it should return 0", () => {
+      const expectedResult = 0;
+
+      const result = calculateRelativePercentage(10, 10, 60);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe("When the value is equal to the maxValue", () => {
+    test("Then it should return 100%", () => {
+      const expectedResult = 100;
+
+      const result = calculateRelativePercentage(60, 10, 60);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe("When the value is exactly in the middle of the range with a min value of 0 and a max value of 100", () => {
+    test("Then it should return 50%", () => {
+      const expectedResult = 50;
+
+      const result = calculateRelativePercentage(50, 0, 100);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe("When the value is 55 and the minValue is 10 and the maxValue is 60", () => {
+    test("Then it should return 90%", () => {
+      const expectedResult = 90;
+
+      const result = calculateRelativePercentage(55, 10, 60);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe("When the value is between minValue is 10 and maxValue is 60", () => {
+    test("Then it should return 60%", () => {
+      const expectedResult = 60;
+
+      const result = calculateRelativePercentage(40, 10, 60);
+
+      expect(result).toBe(expectedResult);
     });
   });
 });

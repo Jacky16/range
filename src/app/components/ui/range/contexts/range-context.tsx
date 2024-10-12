@@ -10,7 +10,7 @@ const RangeContext = createContext<RangeContextProps | null>(null);
 export const useRange = () => {
   const context = useContext(RangeContext);
   if (!context) {
-    throw new Error("useRange debe ser usado dentro de un RangeProvider");
+    throw new Error("useRange must be used within a RangeProvider");
   }
   return context;
 };

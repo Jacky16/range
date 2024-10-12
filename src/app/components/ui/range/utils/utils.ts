@@ -17,6 +17,17 @@ export const calculateThumbPosition = (
   return minValue + (clampedPercentage / 100) * (maxValue - minValue);
 };
 
+export const calculateRelativePercentage = (
+  value: number,
+  minValue: number,
+  maxValue: number
+): number => {
+  if (value < minValue) return 0;
+  if (value > maxValue) return 100;
+
+  return ((value - minValue) / (maxValue - minValue)) * 100;
+};
+
 export const checkThumbPosition = (
   currentValue: number,
   previousValue: RangeValue,

@@ -2,13 +2,14 @@ import { forwardRef, HTMLAttributes } from "react";
 import { tv } from "tailwind-variants";
 import { useRange } from "./contexts/range-context";
 import { ThumbPosition } from "./types/thumb.types";
+import { calculateRelativePercentage } from "./utils/utils";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   position: ThumbPosition;
 }
 
 const thumb = tv({
-  base: " absolute cursor-grab rounded-full bg-primary transition-transform ease-out hover:scale-125 ",
+  base: "absolute cursor-grab rounded-full bg-primary transition-transform ease-out hover:scale-125",
   variants: {
     dragging: {
       true: "hover:cursor-grabbing",
@@ -19,18 +20,22 @@ const thumb = tv({
 
 const Thumb = forwardRef<HTMLDivElement, Props>(
   ({ className, position, ...props }, ref) => {
-    const { isDragging, rangeValue, thumbSize } = useRange();
+    const { isDragging, rangeValue, thumbSize, initialValue } = useRange();
 
     return (
       <div
         ref={ref}
+        className={thumb({ className, dragging: isDragging })}
         style={{
+          ...props.style,
           width: `${thumbSize}px`,
           height: `${thumbSize}px`,
-          left:
-            position === "left" ? `${rangeValue.min}%` : `${rangeValue.max}%`,
+          left: `${calculateRelativePercentage(
+            position === "left" ? rangeValue.min : rangeValue.max,
+            initialValue.min,
+            initialValue.max
+          )}%`,
         }}
-        {...props}
         role="slider"
         aria-valuemin={position === "left" ? rangeValue.min : rangeValue.max}
         aria-valuemax={position === "left" ? rangeValue.max : rangeValue.min}
@@ -38,7 +43,7 @@ const Thumb = forwardRef<HTMLDivElement, Props>(
         aria-labelledby={`${position}-thumb`}
         aria-readonly
         aria-valuenow={position === "left" ? rangeValue.min : rangeValue.max}
-        className={thumb({ className, dragging: isDragging })}
+        {...props}
       />
     );
   }
