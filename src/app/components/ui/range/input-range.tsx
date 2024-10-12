@@ -36,10 +36,10 @@ const formatCurrency = (value: number) => {
 
 const InputRange = forwardRef<HTMLInputElement, Props>(
   ({ className, position, onChange }, ref) => {
-    const { updateRangeValue, rangeValue, initialValue } = useRange();
+    const { updateRangeValue, rangeValue, initialValue, values } = useRange();
 
     const [state, setState] = useState<INPUT_STATE>(INPUT_STATE.NORMAL);
-    const [inputValue, setInputValue] = useState<number>(
+    const [inputValue, setInputValue] = useState(
       position === "left" ? rangeValue.min : rangeValue.max
     );
 
@@ -56,6 +56,8 @@ const InputRange = forwardRef<HTMLInputElement, Props>(
     return (
       <input
         ref={ref}
+        readOnly={values.length > 0}
+        disabled={values.length > 0}
         type="text"
         className={inputRange({ className, position })}
         value={getValue()}
