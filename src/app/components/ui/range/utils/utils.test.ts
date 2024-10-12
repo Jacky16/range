@@ -3,6 +3,8 @@ import {
   calculateRelativePercentage,
   calculateThumbPosition,
   checkThumbPosition,
+  findClosestValue,
+  getClosestValueIndex,
 } from "./utils";
 
 describe("Given the calculateThumbPosition function", () => {
@@ -301,6 +303,102 @@ describe("Given the calculateRelativePercentage function", () => {
       const expectedResult = 60;
 
       const result = calculateRelativePercentage(40, 10, 60);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+});
+
+describe("Given the findClosestValue function", () => {
+  const values = [1.99, 5.99, 10.99, 30.99, 50.99, 70.99];
+
+  describe(`When the value is 9 and the values ${values.map((value) =>
+    value.toString()
+  )}`, () => {
+    test("Then it should return 10.99", () => {
+      const expectedResult = 10.99;
+
+      const result = findClosestValue(9, values);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe(`When the value is 50 and the values ${values.map((value) =>
+    value.toString()
+  )}`, () => {
+    test("Then it should return 50.99", () => {
+      const expectedResult = 50.99;
+      const value = 50;
+
+      const result = findClosestValue(value, values);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe(`When the value is 100 and the values ${values.map((value) =>
+    value.toString()
+  )}`, () => {
+    test("Then it should return 70.99", () => {
+      const expectedResult = 70.99;
+      const value = 100;
+
+      const result = findClosestValue(100, values);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe(`When the value is 0 and the values ${values.map((value) =>
+    value.toString()
+  )}`, () => {
+    test("Then it should return 1.99", () => {
+      const expectedResult = 1.99;
+      const result = findClosestValue(0, values);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+});
+
+describe("Given the getClosestValueIndex function", () => {
+  const values = [1.99, 5.99, 10.99, 30.99, 50.99, 70.99];
+
+  describe(`When the value is 10.99 and the values ${values.map((value) =>
+    value.toString()
+  )}`, () => {
+    test("Then it should return 2", () => {
+      const expectedResult = 2;
+      const value = 10.99;
+
+      const result = getClosestValueIndex(values, value);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe(`When the value is 25 and the values ${values.map((value) =>
+    value.toString()
+  )}`, () => {
+    test("Then it should return 3", () => {
+      const expectedResult = 3;
+      const value = 25;
+
+      const result = getClosestValueIndex(values, value);
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe(`When the value is 100 and the values ${values.map((value) =>
+    value.toString()
+  )}`, () => {
+    test("Then it should return 5", () => {
+      const expectedResult = 5;
+      const value = 100;
+
+      const result = getClosestValueIndex(values, value);
 
       expect(result).toBe(expectedResult);
     });

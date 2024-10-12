@@ -45,3 +45,31 @@ export const checkThumbPosition = (
 
   return currentValue;
 };
+
+export const findClosestValue = (
+  position: number,
+  values: number[]
+): number => {
+  let closestValue = values[0];
+
+  let closestDiff = Math.abs(position - closestValue);
+
+  for (const value of values) {
+    const diff = Math.abs(position - value);
+
+    if (diff < closestDiff) {
+      closestDiff = diff;
+      closestValue = value;
+    }
+  }
+
+  return closestValue;
+};
+
+export const getClosestValueIndex = (values: number[], nextValue: number) => {
+  const distances = values.map((value) => Math.abs(value - nextValue));
+
+  const closestDistance = Math.min(...distances);
+
+  return distances.indexOf(closestDistance);
+};
