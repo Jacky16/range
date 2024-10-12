@@ -2,8 +2,8 @@ import { RangeValue } from "../types/range-context.types";
 import { calculateThumbPosition, checkThumbPosition } from "./utils";
 
 describe("Given the calculateThumbPosition function", () => {
-  describe("When the mouse is positioned at the middle of the range and the thumb size is 0", () => {
-    test("Then it should return 50% of the range", () => {
+  describe("When the mouse is positioned at the middle of the range with an min value of 0 and a max value of 100 ", () => {
+    test("Then it should return the middle value of the range", () => {
       const expectedResult = 50;
 
       const options = {
@@ -11,42 +11,47 @@ describe("Given the calculateThumbPosition function", () => {
         rangeWidth: 100,
         thumbSize: 0,
         mouseXPosition: 50,
+        minValue: 0,
+        maxValue: 100,
       };
 
       const result = calculateThumbPosition(
         options.mouseXPosition,
         options.rangeLeftPosition,
         options.rangeWidth,
-        options.thumbSize
+        options.minValue,
+        options.maxValue
       );
 
       expect(result).toBe(expectedResult);
     });
   });
 
-  describe("When the mouse is positioned at the middle of the range and the thumb size is 20", () => {
-    test("Then it should return 40% of the range", () => {
-      const expectedResult = 40;
+  describe("When the mouse is positioned at the middle of the range with an min value of 0 and a max value of 60  ", () => {
+    test("Then it should return 24% of the range", () => {
+      const expectedResult = 24;
 
       const options = {
         rangeLeftPosition: 0,
         rangeWidth: 100,
-        thumbSize: 20,
-        mouseXPosition: 50,
+        mouseXPosition: 40,
+        minValue: 0,
+        maxValue: 60,
       };
 
       const result = calculateThumbPosition(
         options.mouseXPosition,
         options.rangeLeftPosition,
         options.rangeWidth,
-        options.thumbSize
+        options.minValue,
+        options.maxValue
       );
 
       expect(result).toBe(expectedResult);
     });
   });
 
-  describe("When the mouse is positioned at 20% of the range and the thumb size is 20", () => {
+  describe("When the mouse is positioned at 20% of the range with an min value of 0 and a max value of 50", () => {
     test("Then it should return 10% of the range", () => {
       const expectedResult = 10;
 
@@ -55,13 +60,66 @@ describe("Given the calculateThumbPosition function", () => {
         rangeWidth: 100,
         thumbSize: 20,
         mouseXPosition: 20,
+        minValue: 0,
+        maxValue: 50,
       };
 
       const result = calculateThumbPosition(
         options.mouseXPosition,
         options.rangeLeftPosition,
         options.rangeWidth,
-        options.thumbSize
+        options.minValue,
+        options.maxValue
+      );
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe("When the mouse is positioned at the end of the range and the range is between 10 and 50", () => {
+    test("Then it should return the max value of the range", () => {
+      const expectedResult = 50;
+
+      const options = {
+        rangeLeftPosition: 0,
+        rangeWidth: 100,
+        thumbSize: 10,
+        mouseXPosition: 100,
+        minValue: 10,
+        maxValue: 50,
+      };
+
+      const result = calculateThumbPosition(
+        options.mouseXPosition,
+        options.rangeLeftPosition,
+        options.rangeWidth,
+        options.minValue,
+        options.maxValue
+      );
+
+      expect(result).toBe(expectedResult);
+    });
+  });
+
+  describe("When the mouse is positioned at the start of the range and the range is between 10 and 50", () => {
+    test("Then it should return the min value of the range", () => {
+      const expectedResult = 10;
+
+      const options = {
+        rangeLeftPosition: 0,
+        rangeWidth: 100,
+        thumbSize: 10,
+        mouseXPosition: 0,
+        minValue: 10,
+        maxValue: 50,
+      };
+
+      const result = calculateThumbPosition(
+        options.mouseXPosition,
+        options.rangeLeftPosition,
+        options.rangeWidth,
+        options.minValue,
+        options.maxValue
       );
 
       expect(result).toBe(expectedResult);

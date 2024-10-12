@@ -16,7 +16,6 @@ const RangeContainer = () => {
   } = useRange();
 
   const trackRef = useRef<HTMLDivElement>(null);
-
   const leftThumbRef = useRef<HTMLDivElement>(null);
   const rightThumbRef = useRef<HTMLDivElement>(null);
 
@@ -29,13 +28,16 @@ const RangeContainer = () => {
     if (!trackRef.current) return;
 
     const mouseXPosition = event.clientX;
-    const rangeWidth = trackRef.current.getBoundingClientRect();
+
+    const trackRect = trackRef.current.getBoundingClientRect();
 
     let thumbPosition = calculateThumbPosition(
       mouseXPosition,
-      rangeWidth.left,
-      rangeWidth.width,
-      thumbSize
+      trackRect.left,
+      trackRect.width,
+      initialValue.min,
+      initialValue.max,
+      thumbSize / 2
     );
 
     if (isDraggingLeft.current) {
@@ -57,9 +59,11 @@ const RangeContainer = () => {
     }
 
     if (isDraggingRight.current) {
-      if (thumbPosition >= initialValue.max) thumbPosition = initialValue.max;
-      else if (thumbPosition <= rangeValue.min)
+      if (thumbPosition >= initialValue.max) {
+        thumbPosition = initialValue.max;
+      } else if (thumbPosition <= rangeValue.min) {
         thumbPosition = rangeValue.min - 0.01;
+      }
 
       updateRangeValue({
         ...rangeValue,
@@ -82,18 +86,6 @@ const RangeContainer = () => {
     window.addEventListener("mouseup", handleMouseUp);
   };
 
-  const handleMouseUp = () => {
-    isDraggingLeft.current = false;
-    isDraggingRight.current = false;
-
-    updateIsDragging(false);
-
-    onValueCommit?.(rangeValueRef.current);
-
-    window.removeEventListener("mousemove", handleMouseMove);
-    window.removeEventListener("mouseup", handleMouseUp);
-  };
-
   const handleMouseDownRight = () => {
     isDraggingRight.current = true;
 
@@ -101,6 +93,17 @@ const RangeContainer = () => {
 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
+  };
+
+  const handleMouseUp = () => {
+    isDraggingLeft.current = false;
+    isDraggingRight.current = false;
+
+    updateIsDragging(false);
+    onValueCommit?.(rangeValueRef.current);
+
+    window.removeEventListener("mousemove", handleMouseMove);
+    window.removeEventListener("mouseup", handleMouseUp);
   };
 
   return (
