@@ -13,6 +13,8 @@ export interface RangeContextProps {
   thumbSize: number;
 
   onValueCommit?: (rangeValue: RangeValue) => void;
+
+  values: number[];
 }
 
 export interface RangeProviderProps {
@@ -20,4 +22,5 @@ export interface RangeProviderProps {
   onChange?: (rangeValue: RangeValue) => void;
   onValueCommit?: (rangeValue: RangeValue) => void;
   thumbSize?: number;
+  values?: number[];
 }

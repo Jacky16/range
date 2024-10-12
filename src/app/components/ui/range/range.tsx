@@ -6,6 +6,7 @@ import { RangeValue } from "./types/range-context.types";
 interface Props {
   min?: number;
   max?: number;
+  values?: number[];
   onChange?: (value: RangeValue) => void;
   onValueCommit?: (value: RangeValue) => void;
 }
@@ -13,14 +14,19 @@ interface Props {
 const Range: React.FC<Props> = ({
   min = 0,
   max = 100,
+  values = [],
   onChange,
   onValueCommit,
 }) => {
   return (
     <RangeProvider
-      initialValue={{ min, max }}
+      initialValue={{
+        min: values[0] ?? min,
+        max: values[values.length - 1] ?? max,
+      }}
       onChange={onChange}
       onValueCommit={onValueCommit}
+      values={values}
     >
       <RangeContainer />
     </RangeProvider>

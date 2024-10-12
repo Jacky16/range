@@ -20,6 +20,7 @@ export const RangeProvider = ({
   onChange,
   thumbSize = 16,
   children,
+  values = [],
   onValueCommit,
 }: PropsWithChildren<RangeProviderProps>) => {
   const [rangeValue, setRangeValue] = useState(initialValue);
@@ -43,6 +44,7 @@ export const RangeProvider = ({
         initialValue,
         thumbSize,
         onValueCommit,
+        values,
       }}
     >
       {children}
