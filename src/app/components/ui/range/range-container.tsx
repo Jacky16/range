@@ -36,7 +36,7 @@ const RangeContainer = () => {
     const mouseXPosition = event.clientX;
     const trackRect = trackRef.current.getBoundingClientRect();
 
-    let thumbPosition = calculateThumbPosition(
+    const thumbPosition = calculateThumbPosition(
       mouseXPosition,
       trackRect.left,
       trackRect.width,

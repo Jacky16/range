@@ -4,7 +4,7 @@ import { useRange } from "./contexts/range-context";
 import { checkThumbPosition } from "./utils/utils";
 
 const inputRange = tv({
-  base: "w-16 text-sm border-b-2 bg-transparent border-transparent text-left focus:border-b-2 focus:border-gray-500 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+  base: "w-16 border-b-2 border-transparent bg-transparent text-left text-sm [appearance:textfield] focus:border-b-2 focus:border-gray-500 focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
   variants: {
     position: {
       left: "text-right",
