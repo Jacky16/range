@@ -7,7 +7,9 @@ const createJestConfig = nextJest({
 
 const config: Config = {
   coverageProvider: "v8",
+  testMatch: ["**/?(*.)+(test).[tj]s?(x)"],
   testEnvironment: "jsdom",
+  modulePathIgnorePatterns: ["spec.js"],
 };
 
 export default createJestConfig(config);
