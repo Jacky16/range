@@ -344,7 +344,7 @@ describe("Given the findClosestValue function", () => {
       const expectedResult = 70.99;
       const value = 100;
 
-      const result = findClosestValue(100, values);
+      const result = findClosestValue(value, values);
 
       expect(result).toBe(expectedResult);
     });
