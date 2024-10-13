@@ -2,25 +2,25 @@ import getRangeValueData from "@/api/range-fetcher";
 import Link from "next/link";
 import Range from "../components/ui/range/range";
 
-const PageExerciseOne = async () => {
+const PageExerciseTwo = async () => {
   const rangeData = await getRangeValueData();
 
   return (
     <div className="mx-auto flex h-dvh w-full max-w-xl items-center justify-center gap-4">
-      <div className="w-96 flex flex-col  gap-6">
-        <h1 className="text-start text-3xl">Normal Range</h1>
+      <div className="w-96 flex flex-col gap-6">
+        <h1 className="text-start text-3xl">Fixed values range</h1>
         <div className="flex flex-col items-center gap-6  rounded-xl border p-10">
-          <Range min={rangeData.min} max={rangeData.max} />
+          <Range values={rangeData.rangeValues} />
         </div>
         <Link
           className="text-gray-600 hover:underline self-center"
-          href="/exercise2"
+          href="/exercise1"
         >
-          Go to exercise 2
+          Go to exercise 1
         </Link>
       </div>
     </div>
   );
 };
 
-export default PageExerciseOne;
+export default PageExerciseTwo;
