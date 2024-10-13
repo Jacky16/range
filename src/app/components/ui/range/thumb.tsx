@@ -4,10 +4,6 @@ import { useRange } from "./contexts/range-context";
 import { ThumbPosition } from "./types/thumb.types";
 import { calculateRelativePercentage } from "./utils/utils";
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
-  position: ThumbPosition;
-}
-
 const thumb = tv({
   base: "absolute cursor-grab rounded-full bg-primary transition-transform ease-out hover:scale-125",
   variants: {
@@ -17,6 +13,10 @@ const thumb = tv({
     },
   },
 });
+
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  position: ThumbPosition;
+}
 
 const Thumb = forwardRef<HTMLDivElement, Props>(
   ({ className, position, ...props }, ref) => {
@@ -37,11 +37,9 @@ const Thumb = forwardRef<HTMLDivElement, Props>(
           )}%`,
         }}
         role="slider"
-        aria-valuemin={position === "left" ? rangeValue.min : rangeValue.max}
-        aria-valuemax={position === "left" ? rangeValue.max : rangeValue.min}
+        aria-valuemin={position === "left" ? initialValue.min : rangeValue.min}
+        aria-valuemax={position === "left" ? rangeValue.max : initialValue.max}
         aria-orientation="horizontal"
-        aria-labelledby={`${position}-thumb`}
-        aria-readonly
         aria-valuenow={position === "left" ? rangeValue.min : rangeValue.max}
         {...props}
       />
