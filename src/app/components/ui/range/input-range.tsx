@@ -55,6 +55,7 @@ const InputRange = forwardRef<HTMLInputElement, Props>(
 
     return (
       <input
+        ref={ref}
         readOnly={values.length > 0}
         disabled={values.length > 0}
         type="text"
