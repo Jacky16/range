@@ -114,7 +114,7 @@ const RangeContainer = () => {
   return (
     <div className="flex items-center justify-center gap-2.5">
       <InputRange position="left" />
-      <Track ref={trackRef}>
+      <Track ref={trackRef} id="slider-track">
         <TrackRange />
         <Thumb
           position="left"
