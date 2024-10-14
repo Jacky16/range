@@ -55,10 +55,10 @@ const InputRange = forwardRef<HTMLInputElement, Props>(
 
     return (
       <input
-        ref={ref}
         readOnly={values.length > 0}
         disabled={values.length > 0}
         type="text"
+        aria-label={position === "left" ? "min" : "max"}
         className={inputRange({ className, position })}
         value={getValue()}
         onChange={(event) => {
@@ -71,9 +71,11 @@ const InputRange = forwardRef<HTMLInputElement, Props>(
           onChange?.(newValue);
         }}
         onBlur={(event) => {
-          const newValue = Number(
+          let newValue = Number(
             event.target.value.replace(expressionRegularToGetOnlyNumbers, "")
           );
+
+          newValue = Math.max(Math.min(newValue, initialValue.max), 0);
 
           const checkedValue = checkThumbPosition(
             newValue,
