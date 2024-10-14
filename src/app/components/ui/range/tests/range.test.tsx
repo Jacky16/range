@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Range from "../range";
 
 describe("Given the Range component", () => {
@@ -76,6 +76,80 @@ describe("Given the Range component", () => {
         "aria-valuemin",
         rightThumbExpectedValue.toString()
       );
+    });
+  });
+
+  describe("When the user types 50 on the left thumb input field", () => {
+    test("Then it should return the value 50,00 €", async () => {
+      const valueToBeTyped = 50;
+      const expectedValue = valueToBeTyped.toLocaleString("es", {
+        style: "currency",
+        currency: "EUR",
+      });
+
+      render(<Range min={0} max={100} />);
+
+      const leftThumbInput = screen.getByRole("textbox", {
+        name: "min",
+      });
+
+      await fireEvent.focus(leftThumbInput);
+
+      await fireEvent.change(leftThumbInput, {
+        target: { value: valueToBeTyped.toString() },
+      });
+
+      await fireEvent.blur(leftThumbInput);
+
+      expect(leftThumbInput).toHaveProperty("value", expectedValue);
+    });
+  });
+
+  describe("When the user types 50 on the right thumb input field", () => {
+    test("Then it should return the value 50,00 €", async () => {
+      const valueToBeTyped = 50;
+      const expectedValue = valueToBeTyped.toLocaleString("es", {
+        style: "currency",
+        currency: "EUR",
+      });
+
+      render(<Range min={0} max={100} />);
+
+      const rightThumbInput = screen.getByRole("textbox", {
+        name: "max",
+      });
+
+      await fireEvent.focus(rightThumbInput);
+      await fireEvent.change(rightThumbInput, {
+        target: { value: valueToBeTyped.toString() },
+      });
+      await fireEvent.blur(rightThumbInput);
+
+      expect(rightThumbInput).toHaveProperty("value", expectedValue);
+    });
+  });
+
+  describe("When the user types 200 on the right thumb input field", () => {
+    test("Then it should return the value 100,00 €", async () => {
+      const valueToBeTyped = 200;
+      const expectedValue = Number(100).toLocaleString("es", {
+        style: "currency",
+        currency: "EUR",
+      });
+
+      render(<Range min={0} max={100} />);
+
+      const rightThumbInput = screen.getByRole("textbox", {
+        name: "max",
+      });
+
+      await fireEvent.focus(rightThumbInput);
+      await fireEvent.change(rightThumbInput, {
+        target: { value: valueToBeTyped.toString() },
+      });
+      await fireEvent.blur(rightThumbInput);
+
+      expect(rightThumbInput).toHaveProperty("value", expectedValue);
     });
   });
 
